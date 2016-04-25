@@ -1,10 +1,8 @@
-kafka-status
-============
+# kafka-status
 
-A simple, opinionated ruby script for checking the health of a kafka cluster
+A simple, opinionated ruby script for checking the health of a [Kafka](https://kafka.apache.org/) cluster.
 
-How it works
-------------
+## How it works
 
 1. The script reads kafka's `server.properties` file to determine the zookeeper hosts kafka is using
 2. The script connects to zookeeper and reads the info of all the brokers in the cluster from `/brokers/ids`
@@ -13,21 +11,32 @@ How it works
 5. It prints out the list of brokers and their details, such as ID, IP address, hostname
 6. It prints out a list of topics, and for each topic it lists out the replication factor and partition count
 
-Usage
------
+## Usage
 
-1. Set the script to be executable
+### Setup the Script
 
-```
-chmod +x kafka_status.rb
-```
-
-2. Place the script somewhere like `/usr/local/bin/kafka_status`
-
-3. Run the script, e.g.
+Clone this repository and then ensure the required Gems are installed. You will need Bundler installed (try ``gem install bundler``) and possibly the Ruby Development package (like **ruby-devel** on CentOS) and build tools so that packages can be built if needs be.
 
 ```
-bburton@lookout-kafka-bburton-2:~$ /usr/local/bin/kafka_status
+> cd location/of/the/repository
+> bundle install
+```
+
+Set the script to be executable:
+
+```
+> chmod +x kafka_status.rb
+```
+
+### Run the Script
+
+The script has a couple of optional parameters:
+
+- ```--kafka_path```: The location of the Kafka install folder. Defaults to ```/opt/kafka```
+- ```--verbose```: Sets verbose output
+
+```
+> ./kafka_status
 Kafka Cluster Status: bburton
   The members of this cluster are:
     Broker: lookout-kafka-bburton-1

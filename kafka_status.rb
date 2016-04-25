@@ -7,29 +7,11 @@ require 'rubygems'
 require 'trollop'
 require_relative 'lib/status'
 
-SUB_COMMANDS = %w(status consumer_lag)
-global_opts = Trollop::options do
-  banner "Kafka Status Utility"
-  stop_on SUB_COMMANDS
-end
-
-cmd = ARGV.shift # get the subcommand
-cmd_opts = case cmd
-  when "status"
-    Trollop::options do
-      opt :kafka_path, "Path to Kafka", :required => false, :type => String, :default => "/opt/kafka"
-      opt :verbose, "Verbose output?", :required => false
-      next
-    end
-  when "consumer_lag"
-    Trollop::options do
-      opt :graphite_host, "Graphite Host to send metrics to", :required => true, :type => String
-      opt :environment, "The environment the script is running in", :required => true, :type => String
-      opt :verbose, "Verbose output?", :required => false
-    end
-  else
-    Trollop::die "Use status or consumer_lag"
-  end
+cmd_opts = Trollop::options do
+              banner "Kafka Status Utility"
+              opt :kafka_path, "Path to Kafka", :required => false, :type => :string, :default => "/opt/kafka"
+              opt :verbose, "Verbose output?", :required => false
+            end
 
 
 # Where kafka lives
@@ -37,13 +19,9 @@ kafka_dir = cmd_opts[:kafka_path]
 $kafka_bin = "#{kafka_dir}/bin/"
 $kafka_config = "#{kafka_dir}/config/server.properties"
 
+puts "Looking for Kafka config at #{$kafka_config}"
+
 if __FILE__ == $0
   $verbose = cmd_opts[:verbose]
-  if cmd.inspect =~ /status/
-    kafka_status()
-  elsif cmd.inspect =~ /consumer_lag/
-    $graphite_host = cmd_opts[:graphite_host]
-    $environment = cmd_opts[:environment]
-    consumer_lag()
-  end
+  kafka_status()
 end
