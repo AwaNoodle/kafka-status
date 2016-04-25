@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
-# cli.rb
+# kafka_status.rb
 
 # Brandon Burton, 2014
 
 require 'rubygems'
 require 'trollop'
-require 'lib/status'
+require_relative 'lib/status'
 
 SUB_COMMANDS = %w(status consumer_lag)
 global_opts = Trollop::options do
@@ -17,6 +17,7 @@ cmd = ARGV.shift # get the subcommand
 cmd_opts = case cmd
   when "status"
     Trollop::options do
+      opt :kafka_path, "Path to Kafka", :required => false, :type => String, :default => "/opt/kafka"
       opt :verbose, "Verbose output?", :required => false
       next
     end
@@ -32,7 +33,7 @@ cmd_opts = case cmd
 
 
 # Where kafka lives
-kafka_dir = "/opt/kafka"
+kafka_dir = cmd_opts[:kafka_path]
 $kafka_bin = "#{kafka_dir}/bin/"
 $kafka_config = "#{kafka_dir}/config/server.properties"
 
