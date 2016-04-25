@@ -12,6 +12,18 @@ def kafka_status()
   kafka_brokers = get_broker_details(broker_ids, zk)
   kafka_topics = get_topic_details(kafka_brokers, zookeeper_cluster_hosts)
 
+
+  outputter = $json_output ? :json_outputter : :text_outputter
+  send(outputter, kafka_cluster_name, kafka_brokers, kafka_topics)
+end
+
+def json_outputter(kafka_cluster_name, kafka_brokers, kafka_topics)
+  kafka_info = Hash["name" => kafka_cluster_name, "brokers" => kafka_brokers, "topics" => kafka_topics]
+
+  puts kafka_info.to_json
+end
+
+def text_outputter(kafka_cluster_name, kafka_brokers, kafka_topics)
   # show status
   puts "Kafka Cluster Status: #{kafka_cluster_name}"
   puts "\s\sThe members of this cluster are:"
