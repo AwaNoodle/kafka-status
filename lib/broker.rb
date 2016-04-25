@@ -25,7 +25,6 @@ def get_broker_details(kafka_broker_ids, zk)
     # get details about broker in JSON and turn into a hash
     kafka_broker = zk.get("/brokers/ids/#{broker_id}")[0]
     kafka_broker = JSON.parse(kafka_broker)
-    puts "#{kafka_broker}"
 
     # set kafka_broker_host to short hostname
     kafka_broker_host = kafka_broker["host"].split(".")[0]
