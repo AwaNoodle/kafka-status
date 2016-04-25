@@ -33,7 +33,8 @@ Set the script to be executable:
 The script has a couple of optional parameters:
 
 - ```--kafka_path```: The location of the Kafka install folder. Defaults to ```/opt/kafka```
-- ```--verbose```: Sets verbose output
+- ```--verbose```: Set to enable verbose output
+- ```--json```: Set to enable json output of the results
 
 ```
 > ./kafka_status
